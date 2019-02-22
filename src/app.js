@@ -10,25 +10,27 @@ import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 
-import { addExpense, removeExpense, editExpense } from './actions/expenses';
-import {
-    setTextFilter,
-    sortByAmount,
-    sortByDate,
-    setStartDate,
-    setEndDate,
-} from './actions/filters';
+import { addExpense } from './actions/expenses';
+import { setTextFilter } from './actions/filters';
 import getVisibleExpenses from './selectors/expenses';
 
 // make the store
 const store = configureStore();
 
-// log everything that happens to the store
+/*
+    - commenting out because this will happen by interacting with the           application, but leaving here as example to study
+    
+    - log everything that happens to the store
 store.subscribe(() => {
     const state = store.getState();
     const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
     console.log(visibleExpenses);
 });
+*/
+
+/*
+    - commented out because we will use firebase as database.
+    - leaving examples here to study 
 
 store.dispatch(
     addExpense({ description: 'dinner', amount: 2500, createdAt: 1000 })
@@ -36,10 +38,13 @@ store.dispatch(
 store.dispatch(
     addExpense({ description: 'water bill', amount: 40600, createdAt: 5000 })
 );
-//store.dispatch(setTextFilter());
+store.dispatch(setTextFilter());
+
 store.dispatch(
     addExpense({ description: 'rent', amount: 100600, createdAt: 0 })
 );
+
+*/
 
 //* 1. the Provider component allows us to provide the store to all of the components that make up the application. this means that we do not have to manually pass the store around. instead, any components that want to access the store can just do so
 
