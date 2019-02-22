@@ -198,3 +198,12 @@ module.exports = {
 9. Tweak the dev-server configuration  when using react router with more than one route
         // it should send back index.html for ALL routes, and let react figure out what should get shown to the screen
         // add this property to devServer -> historyApiFallback: true
+10. Change up the webpack configuration for production: 
+    1. in package.json, change the build commands to  
+        "build:dev": "webpack",
+        "build:prod": "webpack -p --env production"
+
+    2. we need a variable to check for production vs development
+        // so instead of exporting an object, we will make a function and       export that instead
+        a)  module.exports = (env) => { return module.exports{} } will now      be a function that returns our configuration
+        // target the devtool with a ternary. if we are not running a production build, use 'source-map'
