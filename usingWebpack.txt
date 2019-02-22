@@ -1,0 +1,200 @@
+Webpack is a powerful module bundler which can also run babel
+- webpack takes modules, stuffs them into ONE file need to run our application,
+    and it is only ever loaded in with a single script tag, even though the underlying application (might) have multiple scripts
+
+src/index.js -----> get passed through webpack -----> output as public/bundle.js
+⬇︎                      ⬇︎                                 ⬇︎
+code I wrote -----> 1. enable modules   ---------->   code the browser runs
+                    2. run babel
+
+
+
+1. install webpack and it's command line interface (locally) via
+     npm install webpack@4.5.0 webpack-cli@2.0.14
+
+2. just like babel, tell webpack where are input/output files located. Do this by    creating a separate configuration file in the root of the project. This file       should be called 'webpack.config.js'
+
+3   Add the webpack script to package.json scripts. The value is webpack
+    "scripts":{
+        "webpack": "webpack"
+    }
+4. npm run webpack
+5. (by default a successulf build will make a file called main.js), if you want      to change the name, do so as another property of the output object filename:      'bundle.js'
+
+
+
+********     SETTING UP THE WEBPACK.CONFIG.JS FILE    **********
+ - this code is processed by node.js
+
+- pass the name of the library, 'path', into the require function to be able to     use that code. also save it to a variable
+    - now i can use this variable in the module.exports output object to get the path
+
+    1. const path = require('path')
+
+
+ - the big picture goal is to create a configuration object, which is defined on..
+    module.exports = {}
+- inside of this object, we provide the configuration details
+    minimum details will be the input (the entry for webpack) and the output.
+
+    2. module.exports = {
+        // 2A. the value for entry is a string -> the relative path to our code 
+        entry: './src/index.js' OR>>>>>>>
+        entry can be an array of the babel polyfill, and our original path
+
+        // 2B. the value for output willl be an object
+            // 2A. the output path property will be a string-> the ABSOLUTE path to where we want the final code to live. But this can change, so....
+            // nodejs gives us a variable to use -> __dirname
+            // __dirname will be the absolute path up to the project root folder
+            // however..., we have to use a function to get __dirname + (the rest of the path)
+            // by using the path library, now i have an absolute path that works on all operating systems
+
+        output: {
+            // call the resolve method on path, passing in __dirname, and the rest of my path
+            path: path.resolve(__dirname, 'public/scripts')
+        }
+    }
+    
+*********   USING BABEL WITH WEBPACK  **********
+
+- set up a webpack loader in order to run the webpack code through babel
+- loaders allow us to customize what happens when webpack loads a file with it's    module system (allowing us to run the code through babel)
+- we get the loader from npm
+1. npm install babel-loader@7.1.4
+2. add the following code to the webpack config file to get the loader feature up
+    -another property to the module.exports object, 'module'
+    - 'module' will be an object, to which we add the 'rules' property
+        - 'rules' will be an array of objects
+            - use the test property (with regex) to test if the file is a js file
+            - tell the 'rules' object which file to apply the rule to. we want it    to apply to all js files except those inside node modules. do this    with the exclude property, whose value will also be a regex
+            - the 'use' property tells the rule what loaders to use
+                - provide the babel presets (an array of strings) inside the options object
+
+        module: {
+            rules: [{
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env']
+                    }
+                }
+            }]
+        }
+3 delete the babel build script from package.json because webpack is handling the babel   build
+4. rename webpack to build in package.json, as follows:  
+    "scripts": {
+        "serve": "live-server public",
+        "build": "webpack",
+    },
+
+
+
+
+
+/*************** USING A WEBPACK DEV SERVER *****************/
+
+- so you don't have to keep toggling back to the terminal and rerunning scripts
+- webpack watches and rereuns the script for you
+
+2 options: 
+    A. inside package.json, add the --watch flag ("build": "webpack --watch")
+        this will watch index.js, AND anything index.js imports
+        -a change is made -> a new bundle is made -> live server rerenders
+
+    B. webpack dev server gives us a single process, combining live server and       the webpack --watch flag
+        1. npm install webpack-dev-server@3.1.3
+        2. make some changes to webpack.config.js file to get the dev server up
+            - there are 2 main things we need to provide to tell the dev server     where it can find the content it's supposed to serve up
+            a. a new property, devServer (an object) 
+                the two paths needed to correctly configure the devServer
+                    1. contentBase is property. value is ABSOLUTE path that tells    devServer where the content you're trying to serve up         lives
+                    2. publicPath is prop. tell devServer where, relative to the     public folder, webpack puts our assets
+
+    C. change the script inside package.json
+        serve and build are now combined into one script
+        * provide 2 scripts: development & production 
+            -the dev-server script is for development
+            -the build script is for production 
+        "scripts": {
+            "dev-server": "webpack-dev-server --mode development",
+            "build": "webpack --mode production"
+        }
+    D. npm run dev-server
+
+
+************ MAKE A SOURCE MAP FOR BETTER DEBUGGING ****************
+- add another property, devtool to module.exports
+    - the value is 'source-map'
+now the line numbers will be accurrate in dev tools, matching up with the code I wrote, rather than the compiled babel code
+
+
+**********     WEBPACK.CONFIG.JS ----- NO COMMENTS     **************
+
+const path = require('path');
+
+module.exports = {
+    entry: ['babel-polyfill', './src/index.js'],
+    output: {
+        path: path.resolve(__dirname, 'public/scripts'),
+        filename: 'bundle.js'
+    },
+    module: {
+            rules: [{
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env']
+                    }
+                }
+            }]
+        },
+    devServer: {
+        contentBase: path.resolve(__dirname, 'public'),
+        publicPath: '/scripts/'
+    },
+    devtool: 'source-map'
+}
+
+
+/*********************************************************************/
+                     Andrew's REACT COURSE
+/*********************************************************************/
+// add webpack locally
+1. yarn add webpack@3.1.0
+2. make webpack script 
+    // everything else will go in webpack.config.js file
+    "build": "webpack --watch"
+3. Andrew also imported babel-core@6.25.0 *this is a difference from js course*
+4. *new: in root of project, make a separate babel configuration file, .babelrc,     to tell webpack what babel presets to use. These are exactly the same as we       had specified via the command line
+    {"presets": ["env", "react"]}
+5. *new source map is different -> devtool: 'cheap-module-evel-source-map'
+6. add babel plugin to allow us to write the newest js code, which will add          support for the class properties syntax. 
+    A. yarn add babel-plugin-transform-class-properties@6.24.1
+    B. in the babelrc file -> 
+    C. (restart dev-server)
+7. set up webpack to compile scss down to css, and add it into the application
+    A. make a new folder inside of src -> styles
+    B. make a single file inside of styles -> styles.css
+    C. in webpack.config.js, add a new rule object 
+        // test to make sure it's a .css file   
+        {test: /\.css$/}
+    D. install  css-loader and style-loader from npm, then configure them in         webpack.config.js 
+        - (after test, inside the same rule object) use: ['style-loader', 'css-loader']
+    E. import the styles file into app.js
+    (now we can restart the dev server)
+8. Tweaking to include support for Sass
+    // watch for either .css or  .scss files
+    A. make a change to the test -> {text: }/\.s?css$/
+    B. rename styles.css to styles.scss
+    C. run scss file through babel by adding a loader       
+        yarn add sass-loader and node-sass
+    D. add new loader onto use array -> 'sass-loader'
+        i dont know what happened, but this fixed the error caused by C -> 
+            yarn add node-sass@latest sass-loader
+9. Tweak the dev-server configuration  when using react router with more than one route
+        // it should send back index.html for ALL routes, and let react figure out what should get shown to the screen
+        // add this property to devServer -> historyApiFallback: true

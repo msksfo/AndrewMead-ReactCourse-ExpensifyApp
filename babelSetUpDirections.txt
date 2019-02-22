@@ -1,0 +1,87 @@
+babel is a transpiler
+
+Directions for running code through babel, originally written from index.js
+
+src/index.js -----> get passed through babel -----> output as public/bundle.js
+⬇︎                      ⬇︎                                 ⬇︎
+code I wrote -----> converted to modern js   -----> code the browser runs
+                    that works everywhere
+                
+
+// this is the code that will be put through babel
+// from the terminal, use the babel command to process the input.js file
+
+// the command to run needs 2 pieces of information
+// 1. what file is the input
+// 2. where do you want to save the output (this file will be created by the    babel command)
+
+Terminal Command to run babel
+    terminal command -> babel inputFile.js -o outputFile.js --presets env
+     ^---> real word --> babel src/index.js -o public/scripts/bundle.js --presets env
+OR... make a script inside package.json This easier than running terminal command every time
+
+ "scripts": {
+    "build-babel": "babel src/index.js -o public/scripts/bundle.js --presets env"
+    }
+ ^---> now we can npm run build (or whatever you named the script)
+ **** tip: add a watch flag to the end of the script so babel will watch the input for changes, and rebuild the output file  automatically
+
+// NPM Terminal Commands to set up babel
+    1. npm init (be sure to run this from the correct folder) or yarn init
+        // the above command creates the package.json file
+    2. install LOCALLY, the babel presets -> npm install babel-preset-env@1.6.1
+        when the above command is run, we get the installed module as part of node-modules folder.
+        *(react course: yarn add babel-preset-react@6.24.1 babel-preset-env@1.5.2)
+         2a. also get the regenerator polyfill
+            npm install babel-polyfill@6.26.0
+            * load the polyfill before loading application code! *
+    3. delete node modules folder. it's huge, we don't need the whole thing!
+    4. run npm install to get JUST the code we need (the dependencies listed in       package.json) this command will rebuild node modules
+    // running babel
+    5.  make the build script inside package.json, adding --watch if needed
+        "scripts": {
+            "build": "babel src/index.js -o public/scripts/bundle.js --presets env --watch"
+        }
+    6. npm run build 
+
+// Folder structure
+    1. make a public folder and a src folder
+    2. src will contain the js files we wrote, js file is commonly called index.js
+    3. public will contain files processed by babel, as well as index.html,         because it is not being run through babel. the js file is commonly called       bundle.js
+
+// BABEL SET UP VIA THE TERMINAL, WITH YARN, FOR ANDREW'S REACT COURSE
+    1. yarn init (from the root of the project! )
+    2. yarn add babel-preset-react@6.24.1 babel-preset-env@1.5.2
+    3. babel src/app.js --out-file=public/scripts/app.js --presets=env,react 
+    4. automate the process by adding the watch flag to the above command
+        babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+
+        **now the code is automatically compiled by babel. use with live-server (folder) to update the changes in real time to the browser
+    *** steps 3 and 4 were changed when we started with webpack
+        now we want to refactor our code to AVOID GLOBAL MODULES. use local modules instead
+        do this by:
+        ----> yarn add live-server babel-cli@6.24.1
+        Add the script to replace the terminal command (MUST be called "scripts")
+        "scripts":{
+            "serve": "live-server public/",
+            "build": "babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch"
+        }
+        yarn run serve
+        yarn run build
+
+        * the ADVANTAGES ARE 
+            1. that all dependencies are defined locally, so if someone else wants to run the application, they know what they need, including specific versions
+            2. we can have different versions for differrent projects
+            3. instead of typing out really long terminal commands, we can call it by its name (serve, build, etc);
+
+    5. always delete node modules (before pushing to github or whatever)
+        because...
+            a) this generated folder will be different anyway depending on the specific npm or yarn version
+            b) also could be different by operating system 
+    6. install node modules on the machine you're running the project on, when       you need it with yarn install
+    7. * add in support for object spread with 
+        a) yarn add babel-plugin-transform-object-rest-spread
+        b) add to babelrc plugin array -> "transform-object-rest-spread" 
+
+// add in the file name below when running code from the playground folder
+babel src/playground/redux-101.js --out-file=public/scripts/app.js --presets=env,react --watch
