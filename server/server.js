@@ -20,17 +20,21 @@ app.use(express.static(publicPath));
 // a) call .get() with the path
 // b) the path could be '/create', '/help', '/whatever', etc
 // c) for us it will be '*', which says to match all unmatched routes
-// d) essentially, if it's in the public folder, we will serve that up, it         it's not, we will serve up the same thing every single time
+// d) essentially, if it's in the public folder, we will serve that up, if         not, give them index.html
 // e) also pass in the function to run
 app.get('*', (req, res) => {
     // send the file back
     res.sendFile(path.join(publicPath, 'index.html'));
 });
 
-//* 6. start up the server
+//* 6. start up the server, for local machine
 // a) tell it which port to listen to
 // b) pass a callback function which is called when the server is up
-app.listen(3000, () => console.log('it works'));
+//app.listen(3000, () => console.log('it works'));
+
+//* 6A altered to be compatible with  heroku
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log('it works'));
 
 //* 7. via the command line:
 // (make sure you have a production build ready, yarn run build:prod )
