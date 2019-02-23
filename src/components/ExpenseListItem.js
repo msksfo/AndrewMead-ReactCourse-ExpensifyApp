@@ -17,8 +17,8 @@ export const ExpenseListItem = props => (
         </h3>
 
         <p>
-            Amount: {numeral(props.amount / 100).format('$0,0.00')}
-            Created at: {moment(props.createdAt).format('MMMM Do, YYYY')}
+            {numeral(props.amount / 100).format('$0,0.00')} ~{' '}
+            {moment(props.createdAt).format('MMMM Do, YYYY')}
         </p>
 
         {/* Andrew removed this functionality from his app. I left it for better understanding the process along the way. if i remove it, i should also remove connect, because I wouldn't need it anymore */}
