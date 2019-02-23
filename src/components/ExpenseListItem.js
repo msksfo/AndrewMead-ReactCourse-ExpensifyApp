@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
+import numeral from 'numeral';
 
 // import my action generator that removes an expense
 import { removeExpense } from '../actions/expenses';
@@ -15,7 +17,8 @@ export const ExpenseListItem = props => (
         </h3>
 
         <p>
-            Amount: {props.amount} ~ Created at: {props.createdAt}
+            Amount: {numeral(props.amount / 100).format('$0,0.00')}
+            Created at: {moment(props.createdAt).format('MMMM Do, YYYY')}
         </p>
 
         {/* Andrew removed this functionality from his app. I left it for better understanding the process along the way. if i remove it, i should also remove connect, because I wouldn't need it anymore */}
