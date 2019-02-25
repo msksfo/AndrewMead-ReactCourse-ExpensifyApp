@@ -18,49 +18,24 @@
 // 2. then we will dispatch an action that returns an object, and THAT will manipulate the redux store
 
 import uuid from 'uuid';
-import database from '../firebase/firebase';
 
 //set up the action generator for adding an expense
 // destructure the values that come from the user with default values in case        none are passed in
-const addExpense = expense => ({
+const addExpense = ({
+    description = '',
+    note = '',
+    amount = 0,
+    createdAt = 0,
+} = {}) => ({
     type: 'ADD_EXPENSE',
-    expense,
+    expense: {
+        id: uuid(),
+        description,
+        note,
+        amount,
+        createdAt,
+    },
 });
-
-// this will dispatch addExpense inside the function and that is what will keep changing the store
-const startAddExpense = (expenseData = {}) => {
-    // this returns the thing that gets dispatched. (before, we were just returning objects)
-    //* this returned function gets called internally by redux, and it is called with dispatch
-    return dispatch => {
-        // write data to firebase
-        // wait for the data to correctly sync up
-        // then we use dispatch to dispatch addExpense, making sure the redux store reflects those changes
-        const {
-            description = '',
-            note = '',
-            amount = 0,
-            createdAt = 0,
-        } = expenseData;
-
-        const expense = { description, note, amount, createdAt };
-
-        // access firebase and use .push() to save the data
-        // in lecture 153, we altered this to *return* databse... By returning the promise chain, we can add .then() in the test file
-        return database
-            .ref('expenses')
-            .push(expense)
-            .then(ref => {
-                //! dispatch the action from up above
-                // otherwise the redux store will never be updated
-                dispatch(
-                    addExpense({
-                        id: ref.key,
-                        ...expense,
-                    })
-                );
-            });
-    };
-};
 
 // set up the action generator for removing an expense by id
 // also could pass in the id as a destructured value { id }
@@ -77,4 +52,4 @@ const editExpense = (id, updates) => ({
     updates,
 });
 
-export { addExpense, removeExpense, editExpense, startAddExpense };
+export { addExpense, removeExpense, editExpense };

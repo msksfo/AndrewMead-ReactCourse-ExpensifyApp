@@ -5,12 +5,12 @@ import expenses from '../fixtures/expenses';
 
 //* set up the spies and the test component once globally, instead of duplicating it in every single test
 //* start each test case with a fresh version of the variables
-let addExpense, history, wrapper;
+let startAddExpense, history, wrapper;
 beforeEach(() => {
-    addExpense = jest.fn();
+    startAddExpense = jest.fn();
     history = { push: jest.fn() };
     wrapper = shallow(
-        <AddExpensePage addExpense={addExpense} history={history} />
+        <AddExpensePage startAddExpense={startAddExpense} history={history} />
     );
 });
 
@@ -24,5 +24,5 @@ test('should handle onSubmit', () => {
     wrapper.find('ExpenseForm').prop('onSubmit')(expenses[1]);
 
     expect(history.push).toHaveBeenLastCalledWith('/');
-    expect(addExpense).toHaveBeenLastCalledWith(expenses[1]);
+    expect(startAddExpense).toHaveBeenLastCalledWith(expenses[1]);
 });

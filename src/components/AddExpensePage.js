@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ExpenseForm from './ExpenseForm';
-import { addExpense } from '../actions/expenses';
+import { startAddExpense } from '../actions/expenses';
 
 // export this (unconnected) so we can test it
 export class AddExpensePage extends React.Component {
@@ -10,7 +10,7 @@ export class AddExpensePage extends React.Component {
         //props.dispatch(addExpense(expense));
 
         //* the above code was refactored to this after adding in mapDispatchToProps, which we did for testing purposes
-        this.props.addExpense(expense);
+        this.props.startAddExpense(expense);
 
         // force a redirect to the dashboard page when user submits
         // pass in the path to the page you want to go to
@@ -30,7 +30,7 @@ export class AddExpensePage extends React.Component {
 const mapDispatchToProps = dispatch => {
     // return an object with props. these props call dispatch
     return {
-        addExpense: expense => dispatch(addExpense(expense)),
+        startAddExpense: expense => dispatch(startAddExpense(expense)),
     };
 };
 
