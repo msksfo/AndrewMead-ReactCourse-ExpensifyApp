@@ -5,16 +5,16 @@ import { EditExpensePage } from '../../components/EditExpensePage';
 
 //* set up the spies and the test component once globally, instead of duplicating it in every single test
 //* start each test case with a fresh version of the variables
-let editExpense, removeExpense, history, wrapper;
+let editExpense, startRemoveExpense, history, wrapper;
 beforeEach(() => {
     editExpense = jest.fn();
-    removeExpense = jest.fn();
+    startRemoveExpense = jest.fn();
     history = { push: jest.fn() };
 
     wrapper = shallow(
         <EditExpensePage
             editExpense={editExpense}
-            removeExpense={removeExpense}
+            startRemoveExpense={startRemoveExpense}
             history={history}
             expense={expenses[2]}
         />
@@ -34,10 +34,10 @@ test('should handle editing an expense', () => {
     expect(editExpense).toHaveBeenLastCalledWith(expenses[2].id, expenses[2]);
 });
 
-test('should handle removing an expense', () => {
+test('should handle start remove expense', () => {
     // find the remove button and simulate clicking it
     wrapper.find('button').simulate('click');
 
     expect(history.push).toHaveBeenLastCalledWith('/');
-    expect(removeExpense).toHaveBeenLastCalledWith({ id: expenses[2].id });
+    expect(startRemoveExpense).toHaveBeenLastCalledWith({ id: expenses[2].id });
 });

@@ -69,6 +69,18 @@ const removeExpense = id => ({
     id,
 });
 
+const startRemoveExpense = id => {
+    return dispatch => {
+        return database
+            .ref(`expenses/${id}`)
+            .remove()
+            .then(() => {
+                //* dispatch remove expenses
+                dispatch(removeExpense(id));
+            });
+    };
+};
+
 // set up the action generator for editing an expense
 // pass in an id, and an updates object
 const editExpense = (id, updates) => ({
@@ -126,4 +138,5 @@ export {
     removeExpense,
     editExpense,
     startAddExpense,
+    startRemoveExpense,
 };
