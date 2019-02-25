@@ -1,12 +1,17 @@
 // this is where i will connect to the firebase database
-// then other files in the project can use the connection by importing what     i have here
+// then other files in the project can use the connection by importing what i have here
 
 //* step 1. grab everything from firebase
 import * as firebase from 'firebase';
 
 //* step 2. get the config object
 // this config object is basically, my password
+// so i should make .env files in the project root, with this info, and add them to the .gitignore file
 const config = {
+    /* when i changed these from the actual values to the process.env variables, i had to also tweak a 
+    bunch of stuff in package.json and webpack.config to make it work
+    */
+
     // change all of these to match the environment from the webpack plugin
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,

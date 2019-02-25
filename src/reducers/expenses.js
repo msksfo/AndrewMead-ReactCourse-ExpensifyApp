@@ -19,6 +19,12 @@ const expensesReducer = (state = expensesReducerDefaultState, action) => {
                     ? { ...value, ...action.updates }
                     : value;
             });
+
+        case 'SET_EXPENSES':
+            // we don't care what is in state, or what the previous expenses were
+            // we just want to set the expenses array completely
+            return action.expenses;
+
         default:
             return state;
     }
