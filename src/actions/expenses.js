@@ -37,12 +37,12 @@ const startAddExpense = (expenseData = {}) => {
         // then we use dispatch to dispatch addExpense, making sure the redux store reflects those changes
         const {
             description = '',
-            note = '',
+            noteText = '',
             amount = 0,
             createdAt = 0,
         } = expenseData;
 
-        const expense = { description, note, amount, createdAt };
+        const expense = { description, noteText, amount, createdAt };
 
         // access firebase and use .push() to save the data
         // in lecture 153, we altered this to *return* databse... By returning the promise chain, we can add .then() in the test file

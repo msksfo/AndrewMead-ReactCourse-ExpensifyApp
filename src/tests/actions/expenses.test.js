@@ -96,7 +96,7 @@ test('should add expense to database and store', done => {
     const expenseData = {
         description: 'Mouse',
         amount: 3000,
-        note: 'this one works',
+        noteText: 'this one works',
         createdAt: 1000,
     };
 
@@ -136,7 +136,7 @@ test('should add expense with defaults to database and store', done => {
     const store = createMockStore({});
     const expenseDefaults = {
         description: '',
-        note: '',
+        noteText: '',
         amount: 0,
         createdAt: 0,
     };

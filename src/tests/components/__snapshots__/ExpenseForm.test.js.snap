@@ -96,7 +96,7 @@ exports[`should render error for invalid form submission 1`] = `
     />
     <textarea
       onChange={[Function]}
-      placeholder="Add a note for your stupid fucking expense (fucking optional)"
+      placeholder="Add a note for your expense (optional)"
       value=""
     />
     <button>
@@ -205,7 +205,7 @@ exports[`should render error for invalid form submission 2`] = `
     />
     <textarea
       onChange={[Function]}
-      placeholder="Add a note for your stupid fucking expense (fucking optional)"
+      placeholder="Add a note for your expense (optional)"
       value=""
     />
     <button>
@@ -311,7 +311,7 @@ exports[`should render expense form correctly 1`] = `
     />
     <textarea
       onChange={[Function]}
-      placeholder="Add a note for your stupid fucking expense (fucking optional)"
+      placeholder="Add a note for your expense (optional)"
       value=""
     />
     <button>
@@ -417,7 +417,7 @@ exports[`should render expense form correctly with expense data 1`] = `
     />
     <textarea
       onChange={[Function]}
-      placeholder="Add a note for your stupid fucking expense (fucking optional)"
+      placeholder="Add a note for your expense (optional)"
     />
     <button>
       Add Expense
