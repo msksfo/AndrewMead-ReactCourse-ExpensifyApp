@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import ExpenseForm from './ExpenseForm';
 
 // import my action generators for removing/editing expenses
-import { editExpense, startRemoveExpense } from '../actions/expenses';
+import { startEditExpense, startRemoveExpense } from '../actions/expenses';
 
 export class EditExpensePage extends React.Component {
     onSubmit = expense => {
-        this.props.editExpense(this.props.expense.id, expense);
+        this.props.startEditExpense(this.props.expense.id, expense);
 
         // history.push() navigates the user programatically, after some code has run. Link is an anchor tag, so nothing happens unless it is clicked
         this.props.history.push('/');
@@ -63,7 +63,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, props) => {
     return {
         // take the data that comes in, -----> pass it down
-        editExpense: (id, expense) => dispatch(editExpense(id, expense)),
+        startEditExpense: (id, expense) =>
+            dispatch(startEditExpense(id, expense)),
         startRemoveExpense: data => dispatch(startRemoveExpense(data)),
     };
 };

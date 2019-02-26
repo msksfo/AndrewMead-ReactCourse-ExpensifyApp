@@ -89,6 +89,18 @@ const editExpense = (id, updates) => ({
     updates,
 });
 
+const startEditExpense = (id, updates) => {
+    return dispatch => {
+        return database
+            .ref(`expenses/${id}`)
+            .update(updates)
+            .then(() => {
+                //* dispatch edit expenses
+                dispatch(editExpense(id, updates));
+            });
+    };
+};
+
 // this will manipulate the redux store in some way
 //* get the array back from firebase, and set it
 const setExpenses = expenses => ({
@@ -139,4 +151,5 @@ export {
     editExpense,
     startAddExpense,
     startRemoveExpense,
+    startEditExpense,
 };
