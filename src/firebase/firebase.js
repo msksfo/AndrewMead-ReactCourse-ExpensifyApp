@@ -31,5 +31,10 @@ const database = firebase.database();
 // we will pass this provider into a firebase method (signInWithPopup), which lives in actions/auth.js
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
+// this line is optional
+googleAuthProvider.setCustomParameters({
+    prompt: 'select_account',
+});
+
 // do this when working with redux & firebase
 export { firebase, googleAuthProvider, database as default };
