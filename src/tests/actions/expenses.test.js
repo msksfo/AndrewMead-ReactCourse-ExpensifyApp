@@ -16,6 +16,10 @@ import database from '../../firebase/firebase';
 // create the configuration so the test cases will all create the same mock store
 const createMockStore = configureMockStore([thunk]);
 
+// as of lecture 168, create a fake user id for testing
+const uid = 'thisismytestuid';
+const defaultAuthState = { auth: { uid } };
+
 // write some data to the firebase test database before each test
 // but don't allow the test case to run until the data has been written to firebase
 beforeEach(done => {
@@ -28,7 +32,7 @@ beforeEach(done => {
     });
 
     database
-        .ref('expenses')
+        .ref(`users/${uid}/expenses`)
         .set(expensesData)
         .then(() => {
             done();
@@ -92,7 +96,7 @@ test('should add expense to database and store', done => {
     // 1. that the database was successfully updated, and
     // 2. that the correct action was dispatched
 
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expenseData = {
         description: 'Mouse',
         amount: 3000,
@@ -119,7 +123,7 @@ test('should add expense to database and store', done => {
             // now fetch the data from firebase (by id) and make sure the data was stored and stored in the right location
             //* by adding return, i am returning a promise
             return database
-                .ref(`expenses/${actions[0].expense.id}`)
+                .ref(`users/${uid}/expenses/${actions[0].expense.id}`)
                 .once('value');
 
             //* now this then() is the success handler for the above returned promise
@@ -133,7 +137,7 @@ test('should add expense to database and store', done => {
 });
 
 test('should add expense with defaults to database and store', done => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expenseDefaults = {
         description: '',
         noteText: '',
@@ -160,7 +164,7 @@ test('should add expense with defaults to database and store', done => {
             // now fetch the data from firebase (by id) and make sure the data was stored and stored in the right location
             //* by adding return, i am returning a promise
             return database
-                .ref(`expenses/${actions[0].expense.id}`)
+                .ref(`users/${uid}/expenses/${actions[0].expense.id}`)
                 .once('value');
 
             //* now this then() is the success handler for the above returned promise
@@ -184,7 +188,7 @@ test('should setup set expense action object with data', () => {
 });
 
 test('should fetch the expenses from firebase', done => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
 
     store
         .dispatch(startSetExpenses())
@@ -204,7 +208,11 @@ test('should fetch the expenses from firebase', done => {
 });
 
 test('should remove expenses from firebase', done => {
-    const store = createMockStore({});
+    // in lecture 168, we changed createMockStore({}), to pass in the auth object, so we can get the user id. All of this is because we now can support multiple users in firebase
+
+    //* Andrew made this into a variable, defaultAuthState ->
+    // { auth: { uid } }
+    const store = createMockStore(defaultAuthState);
     const id = expenses[2].id;
 
     store
@@ -217,7 +225,7 @@ test('should remove expenses from firebase', done => {
                 id,
             });
 
-            return database.ref(`expenses/${id}`).once('value');
+            return database.ref(`users/${uid}/expenses/${id}`).once('value');
         })
         .then(snapshot => {
             expect(snapshot.val()).toBeFalsy();
@@ -226,7 +234,7 @@ test('should remove expenses from firebase', done => {
 });
 
 test('should edit an expense from firebase', done => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const id = expenses[1].id;
     const updates = {
         amount: 21045,
@@ -243,7 +251,7 @@ test('should edit an expense from firebase', done => {
                 updates,
             });
 
-            return database.ref(`expenses/${id}`).once('value');
+            return database.ref(`users/${uid}/expenses/${id}`).once('value');
         })
         .then(snapshot => {
             expect(snapshot.val().amount).toBe(updates.amount);

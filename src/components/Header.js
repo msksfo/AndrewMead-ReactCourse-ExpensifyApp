@@ -7,7 +7,7 @@ export const Header = ({ startLogout }) => (
     // react NavLink is better suited for navigation links
     <header>
         <h1>Expensify</h1>
-        <NavLink exact to="/" activeClassName="is-active">
+        <NavLink to="/dashboard" activeClassName="is-active">
             Dashboard
         </NavLink>
         <NavLink to="/create" activeClassName="is-active">

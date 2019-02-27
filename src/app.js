@@ -56,7 +56,7 @@ firebase.auth().onAuthStateChanged(user => {
 });
 
 /*
-    - commenting out because this will happen by interacting with the           application, but leaving here as example to study
+    - commenting out because this will happen by interacting with the  application, but leaving here as example to study
     
     - log everything that happens to the store
 store.subscribe(() => {
@@ -96,3 +96,24 @@ const jsx = (
 );
 
 ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+
+// notes related to the project as a whole
+//* current structure example (this code is not being used!)
+const db = {
+    expenses: {
+        asdfj: {},
+    },
+};
+
+//* goal structure of project, example (this code is not being used!)
+// when reading/writing from expenses, it will be users/userID/expenses
+//! we will change this over in actions/expenses
+const finalDB = {
+    users: {
+        theUserId: {
+            expenses: {
+                asdfj: {},
+            },
+        },
+    },
+};
