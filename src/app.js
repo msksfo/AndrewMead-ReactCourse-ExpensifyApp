@@ -4,19 +4,56 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import AppRouter from './routers/AppRouter';
+import AppRouter, { history } from './routers/AppRouter';
+
 import configureStore from './store/configureStore';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 
 import { startSetExpenses } from './actions/expenses';
-import { setTextFilter } from './actions/filters';
+import { login, logout } from './actions/auth';
 import getVisibleExpenses from './selectors/expenses';
-import './firebase/firebase';
+
+import { firebase } from './firebase/firebase';
 
 // make the store
 const store = configureStore();
+
+let hasRendered = false;
+const renderApp = () => {
+    // this will conditionally render the app, but it will only do it once
+    //* if we have not rendered, render the app, update the variable
+    if (!hasRendered) {
+        ReactDOM.render(jsx, document.getElementById('app'));
+        hasRendered = true;
+    }
+};
+
+// the callback is run when the authentication data is changed
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        // if the user logged in, redirect them to the dashboard and fetch their expenses
+        //* user.uid is the value we want to store in redux
+        console.log('you are now logged in as user ', user.uid);
+
+        store.dispatch(login(user.uid));
+
+        store.dispatch(startSetExpenses()).then(() => {
+            renderApp();
+
+            if (history.location.pathname === '/') {
+                history.push('/dashboard');
+            }
+        });
+    } else {
+        // take the user to the login page if they logout
+        console.log('you are now logged out. click login to login');
+        store.dispatch(logout());
+        renderApp();
+        history.push('/');
+    }
+});
 
 /*
     - commenting out because this will happen by interacting with the           application, but leaving here as example to study
@@ -59,7 +96,3 @@ const jsx = (
 );
 
 ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
-
-store.dispatch(startSetExpenses()).then(() => {
-    ReactDOM.render(jsx, document.getElementById('app'));
-});

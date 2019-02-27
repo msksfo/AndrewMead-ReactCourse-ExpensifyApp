@@ -93,7 +93,7 @@ export default class ExpenseForm extends React.Component {
                 amount: parseFloat(this.state.amount, 10) * 100,
                 // parse this to get the timestamp
                 createdAt: this.state.createdAt.valueOf(),
-                note: this.state.note,
+                noteText: this.state.noteText,
             });
         }
     };
@@ -131,7 +131,7 @@ export default class ExpenseForm extends React.Component {
                     />
 
                     <textarea
-                        placeholder="Add a note for your stupid fucking expense (fucking optional)"
+                        placeholder="Add a note for your expense (optional)"
                         value={this.state.noteText}
                         onChange={this.onNoteChange}
                     />

@@ -1,7 +1,8 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 import expensesReducer from '../reducers/expenses';
 import filtersReducer from '../reducers/filters';
-import thunk from 'redux-thunk';
+import authReducer from '../reducers/auth';
 
 // if we are using redux devtools, make sure it's correctly set up, otherwise don't worry about it
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -15,6 +16,7 @@ export default () => {
         combineReducers({
             expenses: expensesReducer,
             filters: filtersReducer,
+            auth: authReducer,
         }),
         composeEnhancers(applyMiddleware(thunk))
         // add the line below redux dev tools chrome extension

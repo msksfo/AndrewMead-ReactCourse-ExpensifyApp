@@ -1,31 +1,44 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Header from '../components/Header';
+import { Router, Route, Switch } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+
+import LoginPage from '../components/LoginPage';
 import ExpenseDashboardPage from '../components/ExpenseDashboardPage';
 import AddExpensePage from '../components/AddExpensePage';
 import EditExpensePage from '../components/EditExpensePage';
 import HelpPage from '../components/HelpPage';
 import NotFoundPage from '../components/NotFoundPage';
+import { create } from 'domain';
+import PrivateRoute from './PrivateRoute';
+
+// create our own history, so that we can redirect with history outside the context of a component
+export const history = createHistory();
 
 // set up a component so we can export the routes out of this file
 const AppRouter = () => (
-    <BrowserRouter>
-        <div>
-            <Header />
+    //* in lecture 164, we changed this from  <BrowserRouter>
+    // we did this so we could pass in our OWN history prop
+    // we also exported the history prop, so we can use it in other files. ultimately we need this to redirect users to the dashboard when they login
 
+    <Router history={history}>
+        <div>
             <Switch>
                 {/*  whenever this path is matched, render this component */}
-                <Route exact path="/" component={ExpenseDashboardPage} />
-                <Route path="/create" component={AddExpensePage} />
+                <Route exact path="/" component={LoginPage} />
+                <PrivateRoute
+                    path="/dashboard"
+                    component={ExpenseDashboardPage}
+                />
+                <PrivateRoute path="/create" component={AddExpensePage} />
 
                 {/* :variableName in the path will dynamically match whatever comes after the forward slash */}
-                <Route path="/edit/:id" component={EditExpensePage} />
+                <PrivateRoute path="/edit/:id" component={EditExpensePage} />
                 <Route path="/help" component={HelpPage} />
 
                 <Route component={NotFoundPage} />
             </Switch>
         </div>
-    </BrowserRouter>
+    </Router>
 );
 
 export default AppRouter;

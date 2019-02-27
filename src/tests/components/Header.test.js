@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 //import toJSON from 'enzyme-to-json';
-import Header from '../../components/Header';
+import { Header } from '../../components/Header';
 
 // react-test-renderer is a react library that allows us to render our components inside of regular js code for testing purposes
 
@@ -18,7 +18,7 @@ test('should render Header correctly', () => {
     // console.log(renderer.getRenderOutput());
     // ! the above code is all commented out. it was used before Andrew refactored to use enzyme
 
-    const wrapper = shallow(<Header />);
+    const wrapper = shallow(<Header startLogout={() => {}} />);
 
     //* pass things into .find(), just like document.querySelector('#blahblah')
     //expect(wrapper.find('h1').text()).toBe('Expensify');
@@ -28,4 +28,13 @@ test('should render Header correctly', () => {
     //! after adding toJSON to the config file, i can refactor this -> expect(toJSON(wrapper)).toMatchSnapshot();
     //* to this:
     expect(wrapper).toMatchSnapshot();
+});
+
+test('should call start logout on button click', () => {
+    const startLogoutSpy = jest.fn();
+
+    const wrapper = shallow(<Header startLogout={startLogoutSpy} />);
+
+    wrapper.find('button').simulate('click');
+    expect(startLogoutSpy).toHaveBeenCalled();
 });

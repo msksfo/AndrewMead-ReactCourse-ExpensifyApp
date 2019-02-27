@@ -27,5 +27,9 @@ firebase.initializeApp(config);
 // break it out into a function for readability
 const database = firebase.database();
 
+//* when authenticating, we need to provide an instance of a provider (our provider is google, because we are authenticating with google)
+// we will pass this provider into a firebase method (signInWithPopup), which lives in actions/auth.js
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+
 // do this when working with redux & firebase
-export { firebase, database as default };
+export { firebase, googleAuthProvider, database as default };
