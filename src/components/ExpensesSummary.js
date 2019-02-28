@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import getVisibleExpenses from '../selectors/expenses';
 import getTotalExpenses from '../selectors/expenses-total';
 import { connect } from 'react-redux';
@@ -13,11 +14,19 @@ export const ExpensesSummary = props => {
     ).format('$0,0.00');
 
     return (
-        <div>
-            <h3>
-                Viewing {props.expenses.length} {expenseWord} totalling{' '}
-                {formattedExpenseTotal}
-            </h3>
+        <div className="page-header">
+            <div className="content-container">
+                <h2 className="page-header__title">
+                    Viewing <span>{props.expenses.length}</span> {expenseWord}{' '}
+                    totalling <span>{formattedExpenseTotal}</span>
+                </h2>
+
+                <div className="page-header__actions">
+                    <Link className="button" to="/create">
+                        Add Expense
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 };

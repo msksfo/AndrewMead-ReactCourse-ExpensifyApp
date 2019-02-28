@@ -1,5 +1,9 @@
 /* the entry point file extension is .scss, but the other files that are loaded in are called partials. their file starts with and underscore _base.scss */
 
+* {
+    box-sizing: border-box;
+}
+
 html {
     font-size: 62.5%;
 }
@@ -7,6 +11,8 @@ html {
 body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: $m-size;
+    color: $dark-grey;
+    line-height: 1.6;
 }
 
 button {

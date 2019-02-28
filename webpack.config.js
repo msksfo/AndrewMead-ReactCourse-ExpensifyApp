@@ -28,7 +28,8 @@ module.exports = env => {
     const CSSExtract = new ExtractTextPlugin('styles.css');
 
     return (module.exports = {
-        entry: './src/app.js',
+        //* list babel-polyfill first to add support to older browsers for newest features of javascript
+        entry: ['babel-polyfill', './src/app.js'],
         //entry: './src/playground/hoc.js',
         output: {
             path: path.join(__dirname, 'public', 'dist'),

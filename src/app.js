@@ -13,7 +13,8 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import { startSetExpenses } from './actions/expenses';
 import { login, logout } from './actions/auth';
-import getVisibleExpenses from './selectors/expenses';
+//import getVisibleExpenses from './selectors/expenses';
+import LoadingPage from './components/LoadingPage';
 
 import { firebase } from './firebase/firebase';
 
@@ -35,7 +36,7 @@ firebase.auth().onAuthStateChanged(user => {
     if (user) {
         // if the user logged in, redirect them to the dashboard and fetch their expenses
         //* user.uid is the value we want to store in redux
-        console.log('you are now logged in as user ', user.uid);
+        //console.log('you are now logged in as user ', user.uid);
 
         store.dispatch(login(user.uid));
 
@@ -48,7 +49,7 @@ firebase.auth().onAuthStateChanged(user => {
         });
     } else {
         // take the user to the login page if they logout
-        console.log('you are now logged out. click login to login');
+        //console.log('you are now logged out. click login to login');
         store.dispatch(logout());
         renderApp();
         history.push('/');
@@ -95,7 +96,7 @@ const jsx = (
     </Provider>
 );
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
 // notes related to the project as a whole
 //* current structure example (this code is not being used!)

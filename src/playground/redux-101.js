@@ -5,7 +5,7 @@ import { createStore } from 'redux';
 // * 2. It expects one argument to be passed in,  a function
 // * 3. The first argument to the passed in function is state. We set it up as a          default object (in case there is no current state, what do you want to            start off with )
 // * 4. The second argument passed in is the action. (No default needed)
-// ! A. refactored by extracting the passed in function and saving it as the reducer
+// ! A. step 3 was refactored by extracting the passed in function and saving it as the reducer
 // ! B. pass the reducer into the createStore method
 
 // * KEY ATTRIBUTES OF REDUCERS

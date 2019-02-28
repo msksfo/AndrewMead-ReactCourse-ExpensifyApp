@@ -52,45 +52,56 @@ export class ExpenseListFilters extends React.Component {
 
     render() {
         return (
-            <div>
-                {/* provide an onChange handler so real time changes are dispatched from the component to the store */}
-                <input
-                    type="text"
-                    //! use value and onChange so the component will be a controlled component
-                    value={this.props.filters.text}
-                    onChange={this.onTextChange}
+            <div className="content-container">
+                <div className="input-group">
+                    <div className="input-group__item">
+                        {/* provide an onChange handler so real time changes are dispatched from the component to the store */}
+                        <input
+                            className="text-input"
+                            type="text"
+                            //! use value and onChange so the component will be a controlled component
+                            value={this.props.filters.text}
+                            onChange={this.onTextChange}
+                            placeholder="Search expenses"
 
-                    /* this was refactored to not be an inline function
-                    onChange={e => {
-                        // we have access to dispatch (as a prop) inside our connected components
-                        // use dispatch to update the store as we type
-                        // pass in the action object
-                        this.props.dispatch(setTextFilter(e.target.value));
-                    }}
-                    */
-                />
+                            /* this was refactored to not be an inline function
+                        onChange={e => {
+                            // we have access to dispatch (as a prop) inside our connected components
+                            // use dispatch to update the store as we type
+                            // pass in the action object
+                            this.props.dispatch(setTextFilter(e.target.value));
+                        }}
+                        */
+                        />
+                    </div>
 
-                <select
-                    //! add value here so that the select will be a controlled component!!!
-                    //* it works without it, but in that case the DOM would be the single source of truth, rather than react, which is not what we want.
-                    value={this.props.filters.sortBy}
-                    onChange={this.onSortChange}
-                >
-                    <option value="date">Date</option>
-                    <option value="amount">Amount</option>
-                </select>
+                    <div className="input-group__item">
+                        <select
+                            className="select"
+                            //! add value here so that the select will be a controlled component!!!
+                            //* it works without it, but in that case the DOM would be the single source of truth, rather than react, which is not what we want.
+                            value={this.props.filters.sortBy}
+                            onChange={this.onSortChange}
+                        >
+                            <option value="date">Date</option>
+                            <option value="amount">Amount</option>
+                        </select>
+                    </div>
 
-                {/* allow user to pick the  range of dates they want to see  expenses for. the date range picker from moment.js takes five props (mando), two of which depend on state, so we will make this a class based component */}
-                <DateRangePicker
-                    startDate={this.props.filters.startDate}
-                    endDate={this.props.filters.endDate}
-                    onDatesChange={this.onDatesChange}
-                    focusedInput={this.state.calendarFocused}
-                    onFocusChange={this.onFocusChange}
-                    showClearDates={true}
-                    numberOfMonths={1}
-                    isOutsideRange={() => false}
-                />
+                    <div className="input-group__item">
+                        {/* allow user to pick the  range of dates they want to see  expenses for. the date range picker from moment.js takes five props (mando), two of which depend on state, so we will make this a class based component */}
+                        <DateRangePicker
+                            startDate={this.props.filters.startDate}
+                            endDate={this.props.filters.endDate}
+                            onDatesChange={this.onDatesChange}
+                            focusedInput={this.state.calendarFocused}
+                            onFocusChange={this.onFocusChange}
+                            showClearDates={true}
+                            numberOfMonths={1}
+                            isOutsideRange={() => false}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }

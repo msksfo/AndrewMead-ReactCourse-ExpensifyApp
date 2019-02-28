@@ -82,6 +82,7 @@ OR... make a script inside package.json This easier than running terminal comman
     7. * add in support for object spread with 
         a) yarn add babel-plugin-transform-object-rest-spread
         b) add to babelrc plugin array -> "transform-object-rest-spread" 
+    8. yarn add babel-polyfill to support old browsers, then make       that change to webpack.config
 
 // add in the file name below when running code from the playground folder
 babel src/playground/redux-101.js --out-file=public/scripts/app.js --presets=env,react --watch

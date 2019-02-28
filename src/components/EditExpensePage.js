@@ -22,23 +22,31 @@ export class EditExpensePage extends React.Component {
     render() {
         return (
             <div>
-                <ExpenseForm
-                    // pass the expense object down (it was returned from  mapStateToProps), so that when the create expense page comes up, the field will be populated with the data that previously existed, so the user can edit it
-                    expense={this.props.expense}
-                    // dispatch the action to edit the expense
-                    // redirect to the dashboard page
-                    onSubmit={this.onSubmit}
-                />
+                <div className="page-header">
+                    <div className="content-container">
+                        <h2 className="page-header__title">Edit Expense</h2>
+                    </div>
+                </div>
+                <div className="content-container">
+                    <ExpenseForm
+                        // pass the expense object down (it was returned from  mapStateToProps), so that when the create expense page comes up, the field will be populated with the data that previously existed, so the user can edit it
+                        expense={this.props.expense}
+                        // dispatch the action to edit the expense
+                        // redirect to the dashboard page
+                        onSubmit={this.onSubmit}
+                    />
 
-                <button
-                    onClick={this.onRemove}
-                    // we have access to dispatch (as a prop) inside our connected components
-                    // use dispatch to update the store as users interact with our app
-                    // pass in the action object
-                    // remove an expense by dispatching an action when the button is clicke
-                >
-                    Remove
-                </button>
+                    <button
+                        className="button button--secondary"
+                        onClick={this.onRemove}
+                        // we have access to dispatch (as a prop) inside our connected components
+                        // use dispatch to update the store as users interact with our app
+                        // pass in the action object
+                        // remove an expense by dispatching an action when the button is clicke
+                    >
+                        Remove Expense
+                    </button>
+                </div>
             </div>
         );
     }
