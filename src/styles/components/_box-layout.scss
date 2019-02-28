@@ -1,6 +1,9 @@
 .box-layout {
-    background: url('/images/bg.jpg');
+    background: url('/images/coins.jpg');
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
     display: flex;
     justify-content: center;
     align-items: center;
